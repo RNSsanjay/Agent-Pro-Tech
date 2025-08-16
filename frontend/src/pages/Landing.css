@@ -1,0 +1,1065 @@
+/* Global Performance Optimizations */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+/* Custom Cursor Styles */
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: transform 0.15s ease-out, width 0.15s ease-out, height 0.15s ease-out;
+    z-index: 9999;
+}
+
+.custom-cursor.cursor-enlarged {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 100%) !important;
+}
+
+/* Cursor Trail Particles */
+.cursor-trail {
+    transition: left 0.1s ease-out, top 0.1s ease-out;
+}
+
+.trail-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(59, 130, 246, 0.6);
+    border-radius: 50%;
+    animation: trailFade 0.8s ease-out forwards;
+}
+
+@keyframes trailFade {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+}
+
+/* Magnetic Elements */
+.magnetic-element {
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: none;
+}
+
+.cursor-hover {
+    cursor: none;
+}
+
+/* Enhanced cursor interactions for specific elements */
+.cursor-hover:hover {
+    transform: scale(1.05) !important;
+}
+
+/* Glowing effect on cursor hover */
+.cursor-hover:hover {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Text glow effect */
+.cursor-hover:hover h1,
+.cursor-hover:hover h2,
+.cursor-hover:hover h3 {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    transition: text-shadow 0.3s ease;
+}
+
+/* Button magnetic pull effect */
+.magnetic-element:hover {
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+}
+
+/* Card tilt effect based on cursor position */
+.marvel-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.marvel-card:hover {
+    transform: rotateY(var(--rotate-y, 0deg)) rotateX(var(--rotate-x, 0deg)) scale(1.02);
+}
+
+/* Parallax text effect */
+.parallax-text {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+/* Section Wrapper for Scroll Animations */
+.section-wrapper {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-origin: center center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth scrolling for the entire page */
+.main-content-wrapper {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Override section transforms on initial load */
+.section-wrapper:first-of-type {
+    transform: scale(1) translateY(0px) !important;
+    opacity: 1 !important;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .custom-cursor {
+        display: none !important;
+    }
+
+    .cursor-trail {
+        display: none !important;
+    }
+
+    .magnetic-element {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .section-wrapper {
+        transition: none !important;
+        transform: none !important;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mobile responsiveness - disable cursor effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .custom-cursor {
+        display: none !important;
+    }
+
+    .cursor-trail {
+        display: none !important;
+    }
+
+    .magnetic-element {
+        transform: none !important;
+    }
+
+    .cursor-hover {
+        cursor: pointer !important;
+    }
+
+    .parallax-text {
+        transform: none !important;
+    }
+}
+
+/* Desktop cursor effects */
+@media (hover: hover) and (pointer: fine) {
+    body {
+        cursor: none;
+    }
+}
+
+/* Landing page animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes smoothPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+}
+
+@keyframes smoothFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blinkCursor {
+    from {
+        border-right-color: rgba(59, 130, 246, 0.75);
+    }
+
+    to {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotate(-10deg) scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes magicAppear {
+    0% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.1) rotate(-5deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulseShadow {
+    0% {
+        box-shadow: 0 0 10px rgba(66, 153, 225, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 20px rgba(66, 153, 225, 0.7);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 1s ease-out forwards;
+    will-change: opacity;
+}
+
+.animate-slideInUp {
+    animation: slideInUp 0.8s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+.animate-slideInLeft {
+    animation: slideInLeft 0.8s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+.animate-slideInRight {
+    animation: slideInRight 0.8s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+.animate-pulse {
+    animation: smoothPulse 3s infinite;
+    will-change: opacity, transform;
+}
+
+.animate-float {
+    animation: smoothFloat 6s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.animate-typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid rgba(59, 130, 246, 0.75);
+    animation: typewriter 3.5s steps(40, end) forwards, blinkCursor 0.75s step-end infinite;
+    will-change: width;
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientFlow 4s ease infinite;
+    will-change: background-position;
+}
+
+.animate-rotateIn {
+    animation: rotateIn 1s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+.animate-bounce {
+    animation: bounce 3s infinite;
+    will-change: transform;
+}
+
+.animate-shimmer {
+    background: linear-gradient(to right, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 0.3) 50%, rgba(59, 130, 246, 0) 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
+    will-change: background-position;
+}
+
+.animate-magicAppear {
+    animation: magicAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    will-change: transform, opacity;
+}
+
+/* Animated background element */
+.bg-animated {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.bg-animated-dot {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Glow effects */
+.blue-glow {
+    position: relative;
+}
+
+.blue-glow::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: inherit;
+    filter: blur(15px);
+    background: inherit;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.blue-glow:hover::after {
+    opacity: 0.8;
+    filter: blur(20px);
+}
+
+/* Code display styling */
+.code-block {
+    position: relative;
+    background-color: rgba(30, 41, 59, 0.7);
+    border-radius: 0.5rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    margin: 1rem 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    color: #e2e8f0;
+    transition: all 0.5s ease;
+}
+
+.code-block pre {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    border-radius: 8px;
+    margin: 0;
+    padding: 0;
+    transition: all 0.5s ease;
+    transform-origin: top;
+    line-height: 1.5;
+}
+
+.code-block code {
+    display: block;
+    white-space: pre;
+}
+
+.code-line {
+    display: block;
+    padding: 0.125rem 0;
+}
+
+.code-comment {
+    color: #94a3b8;
+}
+
+.code-keyword {
+    color: #3b82f6;
+}
+
+.code-string {
+    color: #10b981;
+}
+
+.code-function {
+    color: #f59e0b;
+}
+
+/* Storybook-style transitions */
+.storybook-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Marvel-style card effects */
+.marvel-card {
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.marvel-card:hover {
+    transform: rotateY(10deg) rotateX(5deg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Interactive architecture diagram */
+.architecture-diagram {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.architecture-node {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.architecture-node:hover {
+    transform: scale(1.1);
+}
+
+.architecture-line {
+    position: absolute;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.8));
+    height: 2px;
+    transform-origin: left center;
+    transition: all 0.3s ease;
+}
+
+.architecture-node:hover+.architecture-line {
+    height: 3px;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.5), rgba(59, 130, 246, 1));
+}
+
+/* Grok-style chat bubble */
+.chat-bubble {
+    position: relative;
+    background-color: rgba(30, 41, 59, 0.8);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+}
+
+.chat-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: rgba(30, 41, 59, 0.8) transparent transparent transparent;
+}
+
+.chat-bubble:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 5px 15px -5px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Paradox Animations - Optimized for Performance */
+@keyframes paradoxCube {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+        opacity: 0.2;
+    }
+
+    25% {
+        transform: rotateX(90deg) rotateY(90deg) rotateZ(45deg) scale(1.1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: rotateX(180deg) rotateY(180deg) rotateZ(90deg) scale(0.9);
+        opacity: 0.8;
+    }
+
+    75% {
+        transform: rotateX(270deg) rotateY(270deg) rotateZ(135deg) scale(1.2);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg) scale(1);
+        opacity: 0.2;
+    }
+}
+
+@keyframes mobiusStrip {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: rotateX(180deg) rotateY(180deg) scale(1.3);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes fractalZoom {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.1;
+    }
+
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: scale(0.5) rotate(360deg);
+        opacity: 0.1;
+    }
+}
+
+@keyframes paradoxRing {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1);
+        border-color: rgba(59, 130, 246, 0.2);
+    }
+
+    33% {
+        transform: rotateX(120deg) rotateY(120deg) scale(1.2);
+        border-color: rgba(59, 130, 246, 0.6);
+    }
+
+    66% {
+        transform: rotateX(240deg) rotateY(240deg) scale(0.8);
+        border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) scale(1);
+        border-color: rgba(59, 130, 246, 0.2);
+    }
+}
+
+@keyframes portalExpand {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+    }
+}
+
+@keyframes portalText {
+    0% {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes portalParticle {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translate(150px, -75px) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(300px, -150px) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes smoothFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes smoothPulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes smoothGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+    }
+}
+
+/* Paradox Elements - Optimized for Performance */
+.paradox-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.paradox-cube-1,
+.paradox-cube-2,
+.paradox-cube-3,
+.paradox-cube-4 {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.25));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 4px;
+    animation: paradoxCube 12s infinite ease-in-out;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+.paradox-cube-1 {
+    top: 15%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.paradox-cube-2 {
+    top: 15%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+.paradox-cube-3 {
+    bottom: 15%;
+    left: 15%;
+    animation-delay: 6s;
+}
+
+.paradox-cube-4 {
+    bottom: 15%;
+    right: 15%;
+    animation-delay: 9s;
+}
+
+.mobius-strip {
+    width: 150px;
+    height: 150px;
+    border: 2px solid rgba(59, 130, 246, 0.25);
+    border-radius: 50%;
+    animation: mobiusStrip 16s infinite linear;
+    transform-style: preserve-3d;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.fractal-zoom {
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.fractal-layer-1,
+.fractal-layer-2,
+.fractal-layer-3,
+.fractal-layer-4 {
+    position: absolute;
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fractalZoom 20s infinite ease-in-out;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+.fractal-layer-1 {
+    width: 250px;
+    height: 250px;
+    animation-delay: 0s;
+}
+
+.fractal-layer-2 {
+    width: 180px;
+    height: 180px;
+    animation-delay: 5s;
+}
+
+.fractal-layer-3 {
+    width: 120px;
+    height: 120px;
+    animation-delay: 10s;
+}
+
+.fractal-layer-4 {
+    width: 80px;
+    height: 80px;
+    animation-delay: 15s;
+}
+
+.paradox-rings {
+    perspective: 600px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.ring {
+    position: absolute;
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50%;
+    animation: paradoxRing 8s infinite ease-in-out;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.ring-1 {
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+}
+
+.ring-2 {
+    width: 90px;
+    height: 90px;
+    top: -15px;
+    left: -15px;
+    animation-delay: 2.5s;
+}
+
+.ring-3 {
+    width: 120px;
+    height: 120px;
+    top: -30px;
+    left: -30px;
+    animation-delay: 5s;
+}
+
+/* Portal Trigger Square - Optimized */
+.portal-trigger {
+    transition: all 0.2s ease-out;
+    will-change: transform, opacity;
+}
+
+.portal-square {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.4));
+    border: 1px solid rgba(59, 130, 246, 0.6);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: smoothFloat 4s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(8px);
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.portal-square-inner {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: smoothPulse 3s infinite ease-in-out;
+    will-change: transform, opacity;
+}
+
+.portal-square-content {
+    animation: rotateIn 6s infinite ease-in-out;
+    will-change: transform;
+}
+
+/* Portal Overlay - Optimized */
+.portal-overlay {
+    background: rgba(0, 0, 0, 0);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: background-color;
+}
+
+.portal-overlay.portal-open {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.portal-content {
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+    will-change: width, height, border-radius;
+}
+
+.portal-content.portal-content-open {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+}
+
+.portal-inner-content {
+    opacity: 0;
+    animation: portalText 0.8s ease-out 0.4s forwards;
+    will-change: opacity, transform;
+}
+
+.portal-bg-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.portal-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(59, 130, 246, 0.7);
+    border-radius: 50%;
+    animation: portalParticle 4s infinite ease-in-out;
+    will-change: transform, opacity;
+}
+
+.portal-particle:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.portal-particle:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation-delay: 1s;
+}
+
+.portal-particle:nth-child(3) {
+    top: 80%;
+    left: 30%;
+    animation-delay: 2s;
+}
+
+.portal-particle:nth-child(4) {
+    top: 40%;
+    left: 60%;
+    animation-delay: 3s;
+}
+
+.portal-button {
+    transition: all 0.2s ease-out;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+    will-change: transform, box-shadow;
+}
+
+.portal-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+}
+
+.animate-portalText {
+    animation: portalText 0.8s ease-out forwards;
+}
+
+/* Main content wrapper for zoom effect - Optimized */
+.main-content-wrapper {
+    transition: transform 0.05s ease-out;
+    transform-origin: center top;
+    will-change: transform;
+}
+
+/* Performance optimizations */
+.animate-float {
+    animation: smoothFloat 6s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.animate-pulse {
+    animation: smoothPulse 3s infinite;
+    will-change: opacity, transform;
+}
+
+.blue-glow {
+    animation: smoothGlow 4s infinite ease-in-out;
+    will-change: box-shadow;
+}
