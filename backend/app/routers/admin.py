@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.database import get_database
-from app.dependencies import get_current_admin_user
+from app.dependencies import get_current_admin_user, require_database
 from typing import List, Dict, Any
 from datetime import datetime
 import logging

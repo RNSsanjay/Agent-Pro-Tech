@@ -11,6 +11,15 @@ logger = logging.getLogger(__name__)
 
 security = HTTPBearer()
 
+def require_database(db = Depends(get_database)):
+    """Check if database is available and raise error if not"""
+    if db is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database service is currently unavailable. Please try again later."
+        )
+    return db
+
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db = Depends(get_database)
@@ -21,6 +30,13 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
+    # Check if database is available
+    if db is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database service is currently unavailable. Please try again later."
+        )
     
     try:
         token_data = verify_token(credentials.credentials)

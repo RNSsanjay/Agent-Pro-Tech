@@ -4,7 +4,8 @@ from contextlib import asynccontextmanager
 import logging
 
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routers import auth, chat, admin
+from app.routers import chat, admin
+from app.clean_auth_router import router as clean_auth_router
 from app.config import settings
 
 # Configure logging
@@ -38,7 +39,7 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(auth.router)
+app.include_router(clean_auth_router)
 app.include_router(chat.router)
 app.include_router(admin.router)
 

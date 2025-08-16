@@ -12,7 +12,7 @@ from app.auth import (
 )
 from app.database import get_database
 from app.email_service import email_service
-from app.dependencies import get_current_user, check_admin_email
+from app.dependencies import get_current_user, check_admin_email, require_database
 from app.config import settings
 from datetime import datetime, timedelta
 from bson import ObjectId
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
 @router.post("/signup", response_model=MessageResponse)
-async def signup(user: UserCreate, db = Depends(get_database)):
+async def signup(user: UserCreate, db = Depends(require_database)):
     """User registration"""
     try:
         # Check if user already exists
@@ -87,7 +87,7 @@ async def signup(user: UserCreate, db = Depends(get_database)):
         )
 
 @router.post("/login", response_model=Token)
-async def login(login_data: LoginRequest, db = Depends(get_database)):
+async def login(login_data: LoginRequest, db = Depends(require_database)):
     """User login"""
     try:
         # Find user
@@ -145,7 +145,7 @@ async def login(login_data: LoginRequest, db = Depends(get_database)):
         )
 
 @router.post("/verify-email", response_model=MessageResponse)
-async def verify_email(request: VerifyEmailRequest, db = Depends(get_database)):
+async def verify_email(request: VerifyEmailRequest, db = Depends(require_database)):
     """Verify email address"""
     try:
         # Find verification record
@@ -195,7 +195,7 @@ async def verify_email(request: VerifyEmailRequest, db = Depends(get_database)):
         )
 
 @router.post("/forgot-password", response_model=MessageResponse)
-async def forgot_password(request: ForgotPasswordRequest, db = Depends(get_database)):
+async def forgot_password(request: ForgotPasswordRequest, db = Depends(require_database)):
     """Request password reset"""
     try:
         # Check if user exists
@@ -239,7 +239,7 @@ async def forgot_password(request: ForgotPasswordRequest, db = Depends(get_datab
         )
 
 @router.post("/reset-password", response_model=MessageResponse)
-async def reset_password(request: ResetPasswordRequest, db = Depends(get_database)):
+async def reset_password(request: ResetPasswordRequest, db = Depends(require_database)):
     """Reset password with token"""
     try:
         # Find reset record

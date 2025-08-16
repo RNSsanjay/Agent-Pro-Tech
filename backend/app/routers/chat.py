@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models import ChatRequest, ChatResponse, ChatSession, ChatMessage
 from app.database import get_database
-from app.dependencies import get_current_verified_user
+from app.dependencies import get_current_verified_user, require_database
 from app.gemini_service import gemini_service
 from bson import ObjectId
 from datetime import datetime
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 async def chat(
     request: ChatRequest,
     current_user = Depends(get_current_verified_user),
-    db = Depends(get_database)
+    db = Depends(require_database)
 ):
     """Send a message to the chatbot"""
     try:
@@ -103,7 +103,7 @@ async def chat(
 @router.get("/sessions", response_model=List[dict])
 async def get_chat_sessions(
     current_user = Depends(get_current_verified_user),
-    db = Depends(get_database)
+    db = Depends(require_database)
 ):
     """Get user's chat sessions"""
     try:
@@ -135,7 +135,7 @@ async def get_chat_sessions(
 async def get_chat_session(
     session_id: str,
     current_user = Depends(get_current_verified_user),
-    db = Depends(get_database)
+    db = Depends(require_database)
 ):
     """Get a specific chat session with messages"""
     try:
@@ -171,7 +171,7 @@ async def get_chat_session(
 async def delete_chat_session(
     session_id: str,
     current_user = Depends(get_current_verified_user),
-    db = Depends(get_database)
+    db = Depends(require_database)
 ):
     """Delete a chat session"""
     try:

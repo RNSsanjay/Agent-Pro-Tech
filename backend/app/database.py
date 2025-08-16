@@ -26,7 +26,15 @@ async def connect_to_mongo():
         
     except ConnectionFailure as e:
         logger.error(f"Failed to connect to MongoDB: {e}")
-        raise
+        logger.warning("Application will start without database connection. Some features may not work.")
+        # Don't raise the exception, allow the app to start
+        db.client = None
+        db.database = None
+    except Exception as e:
+        logger.error(f"Unexpected error connecting to MongoDB: {e}")
+        logger.warning("Application will start without database connection. Some features may not work.")
+        db.client = None
+        db.database = None
 
 async def close_mongo_connection():
     """Close database connection"""
@@ -34,8 +42,16 @@ async def close_mongo_connection():
         db.client.close()
         logger.info("Disconnected from MongoDB")
 
+def is_database_available():
+    """Check if database connection is available"""
+    return db.client is not None and db.database is not None
+
 async def create_indexes():
     """Create database indexes"""
+    if not is_database_available():
+        logger.warning("Database not available, skipping index creation")
+        return
+        
     try:
         # Users collection indexes
         await db.database.users.create_index("email", unique=True)
